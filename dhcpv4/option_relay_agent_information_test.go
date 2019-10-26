@@ -16,8 +16,13 @@ func TestGetRelayAgentInformation(t *testing.T) {
 	require.NotNil(t, opt)
 	require.Equal(t, len(opt.Options), 2)
 
-	circuit := opt.Get(GenericOptionCode(1))
-	remote := opt.Get(GenericOptionCode(2))
+	circuit := opt.Get(RAISubOptionCode(1))
+	remote := opt.Get(RAISubOptionCode(2))
+	require.Equal(t, circuit, []byte("linux"))
+	require.Equal(t, remote, []byte("boot"))
+
+	circuit = opt.Get(RAIAgentCircuitID)
+	remote = opt.Get(RAIAgentRemoteID)
 	require.Equal(t, circuit, []byte("linux"))
 	require.Equal(t, remote, []byte("boot"))
 
@@ -34,14 +39,14 @@ func TestGetRelayAgentInformation(t *testing.T) {
 
 func TestOptRelayAgentInfo(t *testing.T) {
 	opt := OptRelayAgentInfo(
-		OptGeneric(GenericOptionCode(1), []byte("linux")),
-		OptGeneric(GenericOptionCode(2), []byte("boot")),
+		OptGeneric(RAISubOptionCode(1), []byte("linux")),
+		OptGeneric(RAISubOptionCode(2), []byte("boot")),
 	)
 	wantBytes := []byte{
 		1, 5, 'l', 'i', 'n', 'u', 'x',
 		2, 4, 'b', 'o', 'o', 't',
 	}
-	wantString := "Relay Agent Information:\n    unknown (1): [108 105 110 117 120]\n    unknown (2): [98 111 111 116]\n"
+	wantString := "Relay Agent Information:\n    Agent Circuit ID (1): [108 105 110 117 120]\n    Agent Remote ID (2): [98 111 111 116]\n"
 	require.Equal(t, wantBytes, opt.Value.ToBytes())
 	require.Equal(t, OptionRelayAgentInformation, opt.Code)
 	require.Equal(t, wantString, opt.String())

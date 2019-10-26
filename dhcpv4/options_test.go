@@ -114,7 +114,7 @@ func TestParseOption(t *testing.T) {
 		{
 			code:  OptionRelayAgentInformation,
 			value: []byte{1, 4, 129, 168, 0, 1},
-			want:  "    unknown (1): [129 168 0 1]\n",
+			want:  "    Agent Circuit ID (1): [129 168 0 1]\n",
 		},
 		{
 			code:  OptionClientSystemArchitectureType,

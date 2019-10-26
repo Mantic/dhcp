@@ -15,7 +15,7 @@ var relayHumanizer = OptionHumanizer{
 		return OptionGeneric{data}
 	},
 	CodeHumanizer: func(c uint8) OptionCode {
-		return GenericOptionCode(c)
+		return RAISubOptionCode(c)
 	},
 }
 
@@ -37,46 +37,49 @@ func OptRelayAgentInfo(o ...Option) Option {
 	return Option{Code: OptionRelayAgentInformation, Value: RelayOptions{OptionsFromList(o...)}}
 }
 
-type raiSubOptionCode uint8
+// RAISubOptionCode is the code type for Relay Agent Information
+type RAISubOptionCode uint8
 
-func (o raiSubOptionCode) Code() uint8 {
+// Code returns the uint8 value of the RAI (relay agent information) code.
+func (o RAISubOptionCode) Code() uint8 {
 	return uint8(o)
 }
 
-func (o raiSubOptionCode) String() string {
+func (o RAISubOptionCode) String() string {
 	if s, ok := raiSubOptionCodeToString[o]; ok {
-		return s
+		return fmt.Sprintf("%s (%d)", s, o)
 	}
 	return fmt.Sprintf("unknown (%d)", o)
 }
 
 // Option 82 Relay Agention Information Sub Options
 const (
-	AgentCircuitIDSubOption                raiSubOptionCode = 1   // RFC 3046
-	AgentRemoteIDSubOption                 raiSubOptionCode = 2   // RFC 3046
-	DOCSISDeviceClassSubOption             raiSubOptionCode = 4   // RFC 3256
-	LinkSelectionSubOption                 raiSubOptionCode = 5   // RFC 3527
-	SubscriberIDSubOption                  raiSubOptionCode = 6   // RFC 3993
-	RADIUSAttributesSubOption              raiSubOptionCode = 7   // RFC 4014
-	AuthenticationSubOption                raiSubOptionCode = 8   // RFC 4030
-	VendorSpecificInformationSubOption     raiSubOptionCode = 9   // RFC 4243
-	RelayAgentFlagsSubOption               raiSubOptionCode = 10  // RFC 5010
-	ServerIdentifierOverrideSubOption      raiSubOptionCode = 11  // RFC 5107
-	VirtualSubnetSelectionSubOption        raiSubOptionCode = 151 // RFC 6607
-	VirtualSubnetSelectionControlSubOption raiSubOptionCode = 152 // RFC 6607
+	RAIAgentCircuitID                RAISubOptionCode = 1   // RFC 3046
+	RAIAgentRemoteID                 RAISubOptionCode = 2   // RFC 3046
+	RAIDOCSISDeviceClass             RAISubOptionCode = 4   // RFC 3256
+	RAILinkSelection                 RAISubOptionCode = 5   // RFC 3527
+	RAISubscriberID                  RAISubOptionCode = 6   // RFC 3993
+	RAIRADIUSAttributes              RAISubOptionCode = 7   // RFC 4014
+	RAIAuthentication                RAISubOptionCode = 8   // RFC 4030
+	RAIVendorSpecificInformation     RAISubOptionCode = 9   // RFC 4243
+	RAIRelayAgentFlags               RAISubOptionCode = 10  // RFC 5010
+	RAIServerIdentifierOverride      RAISubOptionCode = 11  // RFC 5107
+	RAIVirtualSubnetSelection        RAISubOptionCode = 151 // RFC 6607
+	RAIVirtualSubnetSelectionControl RAISubOptionCode = 152 // RFC 6607
 )
 
-var raiSubOptionCodeToString = map[raiSubOptionCode]string{
-	AgentCircuitIDSubOption:                "Agent Circuit ID Sub-option",
-	AgentRemoteIDSubOption:                 "Agent Remote ID Sub-option",
-	DOCSISDeviceClassSubOption:             "DOCSIS Device Class Sub-option",
-	LinkSelectionSubOption:                 "Link Selection Sub-option",
-	SubscriberIDSubOption:                  "Subscriber ID Sub-option",
-	RADIUSAttributesSubOption:              "RADIUS Attributes Sub-option",
-	AuthenticationSubOption:                "Authentication Sub-option",
-	VendorSpecificInformationSubOption:     "Vendor Specific Sub-option",
-	RelayAgentFlagsSubOption:               "Relay Agent Flags Sub-option",
-	ServerIdentifierOverrideSubOption:      "Server Identifier Override Sub-option",
-	VirtualSubnetSelectionSubOption:        "Virtual Subnet Selection Sub-option",
-	VirtualSubnetSelectionControlSubOption: "Virtual Subnet Selection Control Sub-option",
+// raiSubOptionCodeToString is a simple code -> string map for RAI codes.
+var raiSubOptionCodeToString = map[RAISubOptionCode]string{
+	RAIAgentCircuitID:                "Agent Circuit ID",
+	RAIAgentRemoteID:                 "Agent Remote ID",
+	RAIDOCSISDeviceClass:             "DOCSIS Device Class",
+	RAILinkSelection:                 "Link Selection",
+	RAISubscriberID:                  "Subscriber ID",
+	RAIRADIUSAttributes:              "RADIUS Attributes",
+	RAIAuthentication:                "Authentication",
+	RAIVendorSpecificInformation:     "Vendor Specific",
+	RAIRelayAgentFlags:               "Relay Agent Flags",
+	RAIServerIdentifierOverride:      "Server Identifier Override",
+	RAIVirtualSubnetSelection:        "Virtual Subnet Selection",
+	RAIVirtualSubnetSelectionControl: "Virtual Subnet Selection Control",
 }
